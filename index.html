@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-</head>
-<body>
-    <a-scene mindar-image="imageTargetSrc: targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-        <a-assets>
-            <video id="video8" src="8.mp4" preload="auto" loop="true" playsinline webkit-playsinline></video>
-            <video id="video23" src="23.mp4" preload="auto" loop="true" playsinline webkit-playsinline></video>
-        </a-assets>
+  <head>
+    <title>AR Video Playback</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar/dist/mindar-image-aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene mindar="imageTargetSrc: targets.mind" renderer="antialias: true; precision: high;">
+      <a-assets>
+        <video id="myVideo" autoplay loop="true" muted="true" src="mov_bbb.mp4"></video>
+      </a-assets>
 
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-        <a-entity mindar-image-target="targetIndex: 0">
-            <a-video src="#video8" position="0 0 0" rotation="-90 0 0" height="1" width="1.777777" play="onTargetFound: playVideo; onTargetLost: pauseVideo"></a-video>
-        </a-entity>
-
-        <a-entity mindar-image-target="targetIndex: 1">
-            <a-video src="#video23" position="0 0 0" rotation="-90 0 0" height="1" width="1.777777" play="onTargetFound: playVideo; onTargetLost: pauseVideo"></a-video>
-        </a-entity>
+      <!-- Пример таргета для воспроизведения видео -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-video src="#myVideo" position="0 0 0" rotation="-90 0 0" width="1.2" height="0.675"></a-video>
+      </a-entity>
     </a-scene>
 
     <script>
-        AFRAME.registerComponent('playVideo', {
-            init: function () {
-                this.el.addEventListener('targetFound', () => {
-                    this.el.components.material.material.map.image.play();
-                });
-                this.el.addEventListener('targetLost', () => {
-                    this.el.components.material.material.map.image.pause();
-                });
-            }
-        });
-    </script>
-</body>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Предполагая, что у вас есть элемент video с id="myVideo"
+    var video = document.getElementById('myVideo');
+
+    // Обработчик события, который запускает воспроизведение при нажатии на страницу
+    // Это необходимо для обхода ограничений браузера на автовоспроизведение
+    document.body.addEventListener('click', function () {
+      video.play();
+    }, {once: true}); // Слушатель срабатывает один раз
+
+    // Дополнительно, если ваша библиотека AR поддерживает события распознавания,
+    // можно запускать воспроизведение видео при успешном распознавании
+    // Например:
+    // myARLibrary.on('targetFound', function() {
+    //   video.play();
+    // });
+
+    // И наоборот, при потере цели останавливать воспроизведение
+    // myARLibrary.on('targetLost', function() {
+    //   video.pause();
+    // });
+  });
+</script>
+
+  </body>
 </html>
