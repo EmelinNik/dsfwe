@@ -24,23 +24,17 @@
     // Предполагая, что у вас есть элемент video с id="myVideo"
     var video = document.getElementById('myVideo');
 
-    // Обработчик события, который запускает воспроизведение при нажатии на страницу
-    // Это необходимо для обхода ограничений браузера на автовоспроизведение
-    document.body.addEventListener('click', function () {
-      video.play();
-    }, {once: true}); // Слушатель срабатывает один раз
-
     // Дополнительно, если ваша библиотека AR поддерживает события распознавания,
     // можно запускать воспроизведение видео при успешном распознавании
     // Например:
-    // myARLibrary.on('targetFound', function() {
-    //   video.play();
-    // });
+     myARLibrary.on('targetFound', function() {
+       video.play();
+     });
 
     // И наоборот, при потере цели останавливать воспроизведение
-    // myARLibrary.on('targetLost', function() {
-    //   video.pause();
-    // });
+     myARLibrary.on('targetLost', function() {
+       video.pause();
+     });
   });
 </script>
 
